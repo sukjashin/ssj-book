@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>나의 문체 찾기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ec; --bg2:#efe8dc; --paper:#fffdf9; --ink:#26221e; --sub:#6e655b; --line:#e3dacb;
+  --accent:#b5762a; --accent-d:#8f5b1d; --accent-soft:#f6e9d6; --navy:#1d2733; --ok:#3d7a55; --warn:#b5543c;
+  --serif:'Noto Serif KR','AppleMyungjo','Batang',serif;
+  --sans:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.75}
+button{font-family:inherit;cursor:pointer}
+textarea,input,select{font-family:inherit;font-size:15px;color:var(--ink)}
+a.btn{text-decoration:none;display:inline-block}
+
+.topbar{position:sticky;top:0;z-index:20;background:rgba(247,243,236,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .in{max-width:1180px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.brand .mark{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:15px}
+.menu{display:flex;gap:2px;margin-left:auto}
+.menu a{font-size:13.5px;color:var(--sub);text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap}
+.menu a:hover{color:var(--ink)}
+.menu a.on{color:var(--accent-d);background:var(--accent-soft);font-weight:700}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+section.sec{padding:88px 0;border-bottom:1px solid var(--line)}
+section.sec.alt{background:var(--bg2)}
+.head{display:grid;grid-template-columns:110px 1fr;gap:12px 24px;margin-bottom:36px}
+.head .no{font-family:var(--serif);font-size:56px;font-weight:900;color:var(--accent);line-height:1}
+.eye{font-size:12px;letter-spacing:.2em;color:var(--accent-d);font-weight:700}
+.head h2{font-family:var(--serif);font-size:32px;line-height:1.35;margin:4px 0 8px}
+.head p{color:var(--sub);max-width:740px}
+h3{font-family:var(--serif);font-size:18px;line-height:1.45}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px}
+.muted{color:var(--sub);font-size:13.5px}
+.btn{border:1px solid var(--line);background:var(--paper);padding:9px 16px;border-radius:9px;font-size:14px;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:#2c3b4d}
+.btn.accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.accent:hover{background:var(--accent-d)}
+.btn.sm{padding:6px 12px;font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+textarea,input[type=text],select{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#fff;resize:vertical;line-height:1.7}
+textarea:focus,input:focus,select:focus{outline:3px solid var(--accent-soft);border-color:var(--accent)}
+label.f{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+.serif{font-family:var(--serif)}
+
+/* 히어로 */
+.hero{padding:96px 0 80px;border-bottom:1px solid var(--line)}
+.hero .in{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
+.hero h1{font-family:var(--serif);font-size:56px;font-weight:900;line-height:1.25;margin:16px 0}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lead{color:var(--sub);font-size:17px}
+.hero .row{margin-top:28px}
+.hero .btn{padding:13px 26px;font-size:15px}
+.goal{background:var(--navy);color:#fff;border-radius:20px;padding:34px}
+.goal .eye{color:#e7b877}
+.goal p.q{font-family:var(--serif);font-size:22px;line-height:1.6;margin:12px 0 18px}
+.goal .pill{display:inline-block;background:#2c3a4a;border-radius:20px;padding:4px 14px;font-size:13px;color:#d3dae2}
+
+/* 01 고르기 */
+.abc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.abc .card{display:flex;flex-direction:column;gap:14px;transition:.2s}
+.abc .card.picked{border:2px solid var(--accent);background:var(--accent-soft)}
+.abc .letter{font-family:var(--serif);font-size:30px;font-weight:900;color:var(--accent)}
+.abc .txt{font-family:var(--serif);font-size:16.5px;line-height:1.85;flex:1}
+.abc .name{display:none;font-size:13px;font-weight:700;color:var(--accent-d)}
+.revealed .abc .name{display:block}
+#pickResult{margin-top:18px}
+
+/* 02 이해 */
+.axes{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.axes .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.axes .tags span{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:4px 14px;font-family:var(--serif);font-size:15px}
+.combo{margin-top:18px;text-align:center;padding:18px;border:1px dashed var(--accent);border-radius:12px;font-family:var(--serif);font-size:17px;background:var(--paper)}
+.combo b{color:var(--accent-d)}
+
+/* 03 탐색 */
+.explore{display:grid;grid-template-columns:240px 1fr;gap:20px}
+.slist{display:flex;flex-direction:column;gap:4px}
+.slist button{text-align:left;border:1px solid transparent;background:none;padding:10px 14px;border-radius:10px;font-size:15px;display:flex;gap:12px;align-items:center}
+.slist button span{font-size:12px;color:var(--sub);width:20px}
+.slist button:hover{background:var(--paper)}
+.slist button.on{background:var(--navy);color:#fff}
+.slist button.on span{color:#e7b877}
+.slist .grp{font-size:12px;color:var(--sub);letter-spacing:.1em;margin:10px 0 4px 14px}
+.detail h3{font-size:30px}
+.detail .tag{color:var(--accent-d);font-weight:700;margin:4px 0 14px}
+.detail .meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.detail .meta div{background:var(--bg);border-radius:10px;padding:12px 14px;font-size:14px}
+.detail .meta b{display:block;font-size:12px;color:var(--sub);margin-bottom:2px}
+.sample{font-family:var(--serif);font-size:18px;line-height:1.95;border-left:3px solid var(--accent);padding:6px 0 6px 20px;margin:18px 0}
+.task{background:var(--accent-soft);border-radius:12px;padding:14px 18px}
+.task b{color:var(--accent-d)}
+.task textarea{margin-top:10px;min-height:80px}
+
+/* 04 비교 */
+.cmp-tools{display:flex;gap:12px;align-items:end;margin-bottom:16px}
+.cmp-tools > div{width:200px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cmp .card .sample{border:0;padding:0;margin:12px 0}
+.qs{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.qs span{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:14px}
+
+/* 05 실습 */
+.steps5{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.steps5 span{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:13px}
+.steps5 b{color:var(--accent-d)}
+.prac{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+#source{min-height:220px;font-family:var(--serif);font-size:16px;line-height:1.9}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.stats div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.stats b{display:block;font-family:var(--serif);font-size:22px;color:var(--accent-d);line-height:1.3}
+.stats span{font-size:12px;color:var(--sub)}
+.diag{margin-top:10px;font-size:14px;background:var(--accent-soft);border-radius:10px;padding:10px 14px;min-height:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chips button{border:1px solid var(--line);background:var(--paper);border-radius:20px;padding:6px 14px;font-size:14px}
+.chips button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:12px}
+details summary{cursor:pointer;font-weight:700;font-size:14px}
+details pre{white-space:pre-wrap;font-family:var(--sans);font-size:13.5px;line-height:1.7;margin-top:10px}
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.results textarea{min-height:200px;font-family:var(--serif);font-size:15px}
+.results .card{padding:18px}
+
+/* 06 설계 */
+.guide-form{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.guide-form .wide{grid-column:span 3}
+.import{display:flex;gap:10px;align-items:center;margin-bottom:16px;font-size:13.5px;color:var(--sub)}
+
+/* 07 완성 */
+.final{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+#draft{min-height:300px;font-family:var(--serif);font-size:17px;line-height:1.95}
+.gcard{background:var(--navy);color:#fff;border-radius:18px;padding:28px}
+.gcard .eye{color:#e7b877}
+.gcard h3{font-size:22px;margin:4px 0 14px}
+.gcard dl{display:grid;grid-template-columns:90px 1fr;gap:8px 12px;font-size:14.5px}
+.gcard dt{color:#aeb8c4}
+.gcard dd{color:#fff}
+.gcard .row{margin-top:20px}
+.gcard .btn{background:#2c3a4a;color:#fff;border-color:#3a4a5c}
+.gcard .btn.accent{background:var(--accent);border-color:var(--accent)}
+.checks{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.checks span{font-size:12.5px;border-radius:20px;padding:3px 11px}
+.checks span.ok{background:#e3efe6;color:var(--ok)}
+.checks span.no{background:#f6e3dd;color:var(--warn)}
+.closing{margin-top:40px;text-align:center;font-family:var(--serif);font-size:21px;line-height:1.7}
+.closing em{font-style:normal;color:var(--accent-d)}
+
+footer{padding:40px 0;text-align:center;color:var(--sub);font-size:13px}
+footer a{color:var(--accent-d)}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:30px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+@media (max-width:1100px){ .menu{display:none} .prac,.final{grid-template-columns:1fr} .results{grid-template-columns:1fr} }
+@media (max-width:860px){
+  .wrap,.topbar .in{padding:0 16px} .hero h1{font-size:36px} .hero .in{grid-template-columns:1fr}
+  .abc,.axes,.explore,.cmp,.guide-form,.detail .meta{grid-template-columns:1fr} .guide-form .wide{grid-column:auto}
+  .head{grid-template-columns:1fr} .head .no{font-size:40px} .stats{grid-template-columns:repeat(2,1fr)}
+  .slist{flex-direction:row;flex-wrap:wrap} .slist .grp{display:none} .cmp-tools{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar"><div class="in">
+  <a class="brand" href="#top"><span class="mark">聲</span>나의 문체 찾기</a>
+  <nav class="menu" id="menu">
+    <a href="#pick">고르기</a><a href="#understand">이해</a><a href="#explore">탐색</a><a href="#compare">비교</a>
+    <a href="#practice">실습</a><a href="#design">설계</a><a href="#finish">완성</a>
+  </nav>
+  <a class="btn sm" href="index.html">← 주제선언문</a>
+  <a class="btn primary sm" href="#practice">바로 실습하기</a>
+</div></header>
+
+<div class="hero" id="top"><div class="wrap in">
+  <div>
+    <p class="eye">BOOK WRITING · 나의 책, 나의 목소리</p>
+    <h1>같은 내용,<br><em>다른 목소리.</em></h1>
+    <p class="lead">문체를 알면 내 글의 표정이 달라집니다.<br>읽고, 비교하고, 바꿔 쓰며 나만의 목소리를 찾아보세요.</p>
+    <div class="row"><a class="btn accent" href="#pick">시작하기 ↓</a><a class="btn" href="#explore">10가지 문체 보기</a></div>
+  </div>
+  <div class="goal">
+    <p class="eye">오늘의 도착점</p>
+    <p class="q">"내 책을 어떤 목소리로 쓸 것인지<br>한 문단으로 설명할 수 있다."</p>
+    <span class="pill">나의 문체 지침 1개</span> <span class="pill">샘플 원고 1문단</span>
+  </div>
+</div></div>
+
+<!-- 01 고르기 -->
+<section class="sec" id="pick"><div class="wrap">
+  <div class="head"><div class="no">01</div><div><p class="eye">START · 5분</p><h2>먼저, 마음이 가는 글을 골라 보세요</h2><p>세 글은 모두 같은 이야기를 합니다. 무엇이 다르게 느껴지나요? 정답은 없습니다. 내 취향을 발견하는 활동입니다.</p></div></div>
+  <div id="abcWrap"><div class="abc" id="abc"></div></div>
+  <div class="row" id="pickResult"><button class="btn primary" id="reveal">문체 이름 공개하기</button><span class="muted" id="pickMsg"></span></div>
+</div></section>
+
+<!-- 02 이해 -->
+<section class="sec alt" id="understand"><div class="wrap">
+  <div class="head"><div class="no">02</div><div><p class="eye">UNDERSTAND · 5분</p><h2>문체는 글의 목소리입니다</h2><p>주제선언문이 <b>'무엇을 말할 것인가'</b>를 정한다면, 문체는 <b>'어떤 목소리로 전할 것인가'</b>를 정합니다.</p></div></div>
+  <div class="axes">
+    <div class="card"><p class="eye">축 1 · 전달 방식</p><h3>어떻게 전달하는가</h3><div class="tags" id="tagsA"></div></div>
+    <div class="card"><p class="eye">축 2 · 문장 호흡</p><h3>어떻게 이어 가는가</h3><div class="tags" id="tagsB"></div></div>
+  </div>
+  <p class="combo">두 축을 조합합니다 — <b>간결한 설명체</b>, <b>긴 호흡의 사색체</b>, <b>짧은 대화체</b>처럼</p>
+  <p class="muted" style="margin-top:12px">※ 집필 실습을 위해 문체와 서술 방식을 묶은 분류입니다. 서로 겹치지 않는 학술 분류는 아닙니다.</p>
+</div></section>
+
+<!-- 03 탐색 -->
+<section class="sec" id="explore"><div class="wrap">
+  <div class="head"><div class="no">03</div><div><p class="eye">EXPLORE · 15분</p><h2>열 가지 목소리를 만나 보세요</h2><p>문체를 고르면 특징·쓰임·주의점과 예문이 바뀝니다. 모든 예문은 같은 소재 <b>'퇴직 후, 다시 일을 찾는 50대'</b>로 썼습니다.</p></div></div>
+  <div class="explore">
+    <div class="slist" id="slist"></div>
+    <div class="card detail" id="detail"></div>
+  </div>
+</div></section>
+
+<!-- 04 비교 -->
+<section class="sec alt" id="compare"><div class="wrap">
+  <div class="head"><div class="no">04</div><div><p class="eye">COMPARE · 10분</p><h2>내용은 같아도, 느낌은 다르게</h2><p>두 문체를 골라 나란히 읽어 보세요. 같은 소재가 어떻게 달라지는지 보입니다.</p></div></div>
+  <div class="cmp-tools">
+    <div><label class="f" for="cmpA">첫 번째 문체</label><select id="cmpA"></select></div>
+    <div><label class="f" for="cmpB">두 번째 문체</label><select id="cmpB"></select></div>
+    <button class="btn" id="swap">⇄ 바꾸기</button>
+  </div>
+  <div class="cmp" id="cmp"></div>
+  <div class="qs"><span>어느 글이 더 쉽게 이해되나요?</span><span>어느 글이 더 오래 기억되나요?</span><span>내 독자에게는 어느 쪽이 맞을까요?</span></div>
+</div></section>
+
+<!-- 05 실습 -->
+<section class="sec" id="practice"><div class="wrap">
+  <div class="head"><div class="no">05</div><div><p class="eye">PRACTICE · 15분</p><h2>이제, 내 글의 목소리를 바꿔 볼까요?</h2><p>내 글을 넣으면 문장 습관을 바로 분석해 드립니다. 그다음 문체 3개를 골라 AI에게 바꿔 쓰기를 맡기고, 결과를 비교하세요.</p></div></div>
+  <div class="steps5"><span><b>①</b> 원문 쓰기</span><span><b>②</b> 문장 습관 확인</span><span><b>③</b> 문체 3개 선택</span><span><b>④</b> 프롬프트 복사 → AI 실행</span><span><b>⑤</b> 결과 붙여 넣고 비교</span></div>
+  <div class="prac">
+    <div>
+      <label class="f" for="source">나의 원문</label>
+      <textarea id="source" placeholder="책에 넣고 싶은 경험이나 내용을 200~300자 정도 적어 보세요."></textarea>
+      <div class="stats">
+        <div><b id="stChars">0</b><span>글자</span></div>
+        <div><b id="stSent">0</b><span>문장</span></div>
+        <div><b id="stAvg">0</b><span>평균 문장 길이</span></div>
+        <div><b id="stEnd">-</b><span>주로 쓰는 끝맺음</span></div>
+      </div>
+      <p class="diag" id="diag">원문을 쓰면 문장 습관을 분석해 드립니다.</p>
+    </div>
+    <div>
+      <label class="f">바꿔 볼 문체 3개 <span class="muted" id="chipCount"></span></label>
+      <div class="chips" id="chips"></div>
+      <details><summary>생성된 프롬프트 보기</summary><pre id="prompt"></pre></details>
+      <div class="row">
+        <button class="btn primary" id="copyPrompt">맞춤 프롬프트 복사</button>
+        <a class="btn" href="https://claude.ai/new" target="_blank" rel="noopener">Claude 열기 ↗</a>
+        <a class="btn" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기 ↗</a>
+      </div>
+      <p class="muted" style="margin-top:10px">이 페이지에서 AI가 직접 실행되지는 않습니다. 복사한 프롬프트를 AI에 붙여 넣으세요. 개인정보는 복사 전에 지워 주세요.</p>
+    </div>
+  </div>
+  <div class="results" id="results"></div>
+  <div style="margin-top:16px"><label class="f" for="insight">비교하며 발견한 점</label><textarea id="insight" rows="3" placeholder="내 독자에게는 어떤 문체가 맞을까요? 어떤 표현이 나다웠나요?"></textarea></div>
+</div></section>
+
+<!-- 06 설계 -->
+<section class="sec alt" id="design"><div class="wrap">
+  <div class="head"><div class="no">06</div><div><p class="eye">DESIGN · 7분</p><h2>나의 문체를 설계합니다</h2><p>한 권의 책은 기본 목소리를 지키되, 사례·설명·성찰의 목적에 맞게 보조 문체를 섞어 씁니다.</p></div></div>
+  <div class="import"><button class="btn sm" id="importBtn">주제선언문 작성기에서 가져오기</button><span id="importMsg">책의 주제·독자·문체 메모를 불러옵니다.</span></div>
+  <div class="guide-form">
+    <div><label class="f" for="g_topic">책의 주제</label><input type="text" id="g_topic" placeholder="예: 50대 직장인의 퇴직 후 두 번째 일"></div>
+    <div><label class="f" for="g_reader">대상 독자</label><input type="text" id="g_reader" placeholder="예: 은퇴를 앞두고 막막한 50대 직장인"></div>
+    <div><label class="f" for="g_feel">전달할 느낌</label><input type="text" id="g_feel" placeholder="예: 다정함, 현실감, 생각할 여유"></div>
+    <div><label class="f" for="g_main">기본 문체</label><select id="g_main"></select></div>
+    <div><label class="f" for="g_sub">보조 문체</label><select id="g_sub"></select></div>
+    <div><label class="f" for="g_rhythm">문장 호흡</label><select id="g_rhythm"></select></div>
+    <div><label class="f" for="g_end">종결 표현</label><select id="g_end"></select></div>
+    <div><label class="f" for="g_pov">시점·호칭</label><select id="g_pov"></select></div>
+    <div><label class="f" for="g_avoid">피하고 싶은 표현</label><input type="text" id="g_avoid" placeholder="예: 과도한 훈계, 상투적인 격려"></div>
+    <div class="wide"><label class="f" for="g_note">나만의 규칙 (선택)</label><input type="text" id="g_note" placeholder="예: 꼭지마다 실제 경험 한 장면으로 시작한다 / 전문 용어는 처음 나올 때 풀어 쓴다"></div>
+  </div>
+</div></section>
+
+<!-- 07 완성 -->
+<section class="sec" id="finish"><div class="wrap">
+  <div class="head"><div class="no">07</div><div><p class="eye">FINISH · 3분</p><h2>이 목소리로, 다음 문장을 씁니다</h2><p>설계한 문체로 샘플 원고 한 문단을 완성하세요. 지침과 맞는지 자동으로 점검합니다.</p></div></div>
+  <div class="final">
+    <div>
+      <label class="f" for="draft">최종 샘플 원고</label>
+      <textarea id="draft" placeholder="선택한 문체로 한 문단을 완성하세요."></textarea>
+      <div class="checks" id="draftChecks"></div>
+    </div>
+    <div class="gcard">
+      <p class="eye">MY WRITING GUIDE</p>
+      <h3>나의 문체 지침</h3>
+      <dl id="guideList"></dl>
+      <div class="row">
+        <button class="btn accent" id="copyGuide">지침 + 원고 복사 (AI 다듬기용)</button>
+        <button class="btn" id="download">실습 결과 내려받기 ↓</button>
+      </div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:16px">입력한 내용은 이 기기의 브라우저에만 자동 저장됩니다. 공용 컴퓨터에서는 개인적인 내용을 입력하지 마세요.</p>
+  <p class="closing">좋은 문체는 멋을 부리는 기술보다,<br><em>독자에게 정확히 닿는 목소리</em>입니다.</p>
+</div></section>
+
+<footer>聲 나의 문체 찾기 · <a href="index.html">이전 수업 · 주제선언문 작성기</a> · <a href="#top">맨 위로 ↑</a></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ================= 10가지 문체 ================= */
+const STYLES = [
+  {k:'설명체', g:'A', tag:'쉽게 이해시키는 글', feat:'개념을 정의하고, 나누고, 예를 들어 풀어냅니다.',
+   use:'실용서의 개념·방법 설명', warn:'정보를 나열하지 말고 독자가 궁금해할 순서로 쓰세요.',
+   ex:'경력 지도란 지금까지 해 온 일을 \'일·사람·문제\' 세 갈래로 나눠 적은 표다. 이렇게 나누면 직함 뒤에 가려져 있던 기술이 보이고, 그 기술을 필요로 하는 사람도 함께 보인다.',
+   task:'내 책의 핵심 개념 하나를 처음 듣는 사람에게 세 문장으로 설명해 보세요.'},
+  {k:'논설체', g:'A', tag:'주장하고 설득하는 글', feat:'주장을 먼저 밝히고, 근거로 뒷받침합니다.',
+   use:'저자의 관점을 세우는 장, 머리말', warn:'근거 없이 단정하거나 독자를 훈계하지 마세요.',
+   ex:'퇴직 준비는 재테크보다 경력 정리에서 시작해야 한다. 돈은 일을 이어 갈 시간을 벌어 줄 뿐, 그 시간에 무엇을 할지는 알려 주지 않기 때문이다.',
+   task:'"나는 ~라고 생각한다. 왜냐하면 ~" 형식으로 주장 하나와 근거 두 개를 써 보세요.'},
+  {k:'서사체', g:'A', tag:'이야기로 보여 주는 글', feat:'인물의 행동과 변화를 시간의 흐름에 담습니다.',
+   use:'사례, 프롤로그, 경험담', warn:'사건만 나열하지 말고 \'달라지는 순간\'을 잡으세요.',
+   ex:'마지막 출근 날, 그는 명함 상자를 서랍에 그대로 두고 나왔다. 석 달 뒤, 동네 도서관에서 처음으로 \'엑셀 기초\' 강의를 맡았다. 수강생은 일곱 명이었다.',
+   task:'내 경험 하나를 \'처음 – 계기 – 변화\' 세 문장으로 써 보세요.'},
+  {k:'묘사체', g:'A', tag:'장면을 눈앞에 그리는 글', feat:'보이고 들리는 것을 구체적으로 그려 독자를 그 자리에 세웁니다.',
+   use:'장면 도입, 인물·공간 소개', warn:'형용사를 쌓기보다 정확한 사물 하나를 고르세요.',
+   ex:'책상 위에는 반쯤 남은 명함 상자와 식은 커피가 놓여 있었다. 창밖 주차장에는 평일 오전의 햇빛이 낯설 만큼 하얗게 내려앉아 있었다.',
+   task:'기억에 남은 한 장면을 오감 중 두 가지를 써서 그려 보세요.'},
+  {k:'서정체', g:'A', tag:'마음을 건네는 글', feat:'감정과 정서를 앞세워 독자의 마음에 닿습니다.',
+   use:'에세이, 편지, 맺음말', warn:'감정을 설명하기보다 그 감정이 묻어나는 행동을 보여 주세요.',
+   ex:'삼십 년 동안 매일 아침 나를 깨운 것은 알람이 아니라 책임이었다. 그 책임을 내려놓던 날, 홀가분함보다 먼저 찾아온 것은 서운함이었다.',
+   task:'\'슬펐다\', \'기뻤다\' 같은 말을 쓰지 않고 감정 하나를 표현해 보세요.'},
+  {k:'사색체', g:'A', tag:'질문하며 생각을 따라가는 글', feat:'스스로 묻고, 생각이 움직이는 과정을 보여 줍니다.',
+   use:'관점 전환, 성찰이 필요한 꼭지', warn:'질문만 던지고 끝내지 말고 생각의 도착점을 보여 주세요.',
+   ex:'일을 그만두면 나는 무엇으로 나를 소개해야 할까. 어쩌면 우리가 잃는 것은 일이 아니라, 일이 대신 말해 주던 \'나에 대한 설명\'인지도 모른다.',
+   task:'내 책의 주제에 대한 질문 하나로 시작해 세 문장을 이어 써 보세요.'},
+  {k:'대화체', g:'A', tag:'독자에게 말을 거는 글', feat:'"~요"로 독자에게 직접 말하듯 친근하게 씁니다.',
+   use:'입문서, 자기계발서, 실천 안내', warn:'반말과 존댓말을 섞지 말고, 지나친 친근함은 피하세요.',
+   ex:'혹시 \'나는 할 줄 아는 게 없어\'라고 생각하고 계신가요? 그럼 지난 30년 동안 동료들이 가장 자주 물어보던 게 뭐였는지 떠올려 보세요. 거기에 답이 있어요.',
+   task:'독자에게 질문 하나를 던지고, 그 답을 함께 찾아가는 세 문장을 써 보세요.'},
+  {k:'강연체', g:'A', tag:'청중 앞에서 말하듯 힘 있는 글', feat:'반복과 강조, 호명으로 리듬과 에너지를 만듭니다.',
+   use:'동기 부여, 장의 시작과 끝', warn:'같은 구호를 반복하기보다 하나의 메시지를 점점 키우세요.',
+   ex:'여러분, 퇴직은 끝이 아닙니다. 회사와의 계약이 끝났을 뿐, 여러분의 경력은 끝나지 않았습니다. 오늘부터 그 경력을 다시 꺼내 봅시다.',
+   task:'"여러분,"으로 시작해 독자를 움직이게 할 세 문장을 써 보세요.'},
+  {k:'간결체', g:'B', tag:'짧게 끊어 힘을 주는 글', feat:'짧은 문장으로 속도감과 단호함을 만듭니다.',
+   use:'핵심 메시지, 장면 전환, 요약', warn:'모든 문장이 짧으면 딱딱해집니다. 리듬을 위해 가끔 길게 쓰세요.',
+   ex:'퇴직했다. 시간이 생겼다. 그런데 할 일이 없었다. 그래서 적기 시작했다. 내가 해 온 일들을.',
+   task:'긴 문장 하나를 다섯 개의 짧은 문장으로 쪼개 보세요.'},
+  {k:'만연체', g:'B', tag:'긴 호흡으로 흐르는 글', feat:'생각과 감정을 한 문장 안에 길게 이어 깊이를 더합니다.',
+   use:'회상, 깊은 성찰, 분위기 만들기', warn:'주어와 서술어가 어긋나지 않는지 꼭 확인하세요.',
+   ex:'퇴직한 첫 달, 나는 늦잠을 자고 산책을 하고 미뤄 둔 책을 읽으며 이것이 오래 기다려 온 자유라고 믿었지만, 한 달이 지나자 그 자유가 사실은 내일 무엇을 해야 할지 아무도 알려 주지 않는 막막함이라는 것을 알게 되었다.',
+   task:'짧은 문장 세 개를 쉼표와 연결어로 이어 한 문장으로 만들어 보세요.'}
+];
+const S = Object.fromEntries(STYLES.map(s=>[s.k,s]));
+const ABC = [['A','설명체'],['B','서사체'],['C','사색체']];
+const PICK_MSG = {
+  '설명체':'A를 골랐다면, 정확하고 명료한 글을 좋아하시는군요. 설명체나 간결체가 잘 맞을 수 있어요.',
+  '서사체':'B를 골랐다면, 장면과 인물로 기억되는 글을 좋아하시는군요. 서사체·묘사체가 잘 맞을 수 있어요.',
+  '사색체':'C를 골랐다면, 생각할 여지를 주는 글을 좋아하시는군요. 사색체·서정체가 잘 맞을 수 있어요.'
+};
+const OPTS = {
+  g_rhythm:['짧은 문장 중심','짧거나 중간 길이 중심','긴 호흡 중심','짧고 긴 문장을 섞어서'],
+  g_end:['~다','~요','~습니다','장면은 ~다, 조언은 ~요'],
+  g_pov:['1인칭 · 나','1인칭 · 우리','독자를 \'당신\'으로','독자를 \'여러분\'으로','3인칭 · 그/그녀']
+};
+
+/* ================= 저장 ================= */
+const KEY = 'writing-style-maker-v1';
+let state = {pick:null, revealed:false, cur:'설명체', cmpA:'설명체', cmpB:'서사체', chosen:['설명체','서사체','사색체'], results:{}, tasks:{},
+  g_main:'사색체', g_sub:'서사체', g_rhythm:'짧거나 중간 길이 중심', g_end:'~다', g_pov:'1인칭 · 나'};
+try { Object.assign(state, JSON.parse(localStorage.getItem(KEY)) || {}); } catch(e){}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} };
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ================= 문장 분석 ================= */
+function sentences(t){
+  return (t||'').replace(/\r/g,'').split(/(?<=[.!?。…])\s+|\n+/).map(s=>s.trim()).filter(s=>s.replace(/[\s"'”“‘’.!?…]/g,'').length>1);
+}
+function endingOf(s){
+  const x = s.replace(/["'”“‘’)\]\s]+$/,'');
+  if (/\?$/.test(x)) return '질문';
+  const y = x.replace(/[.!…]+$/,'');
+  if (/(니다|니까)$/.test(y)) return '~습니다';
+  if (/요$/.test(y)) return '~요';
+  if (/다$/.test(y)) return '~다';
+  return '기타';
+}
+function analyze(t){
+  const ss = sentences(t), n = ss.length;
+  const chars = (t||'').replace(/\s/g,'').length;
+  const avg = n ? Math.round(ss.reduce((a,s)=>a+s.length,0)/n) : 0;
+  const ends = {}; ss.forEach(s=>{ const e=endingOf(s); ends[e]=(ends[e]||0)+1; });
+  const top = Object.entries(ends).sort((a,b)=>b[1]-a[1])[0];
+  const longest = ss.reduce((a,s)=>s.length>a.length?s:a,'');
+  return {n, chars, avg, ends, top: top?top[0]:'-', longest};
+}
+function rhythmOf(avg){ return avg<=25 ? '간결' : (avg<=50 ? '중간' : '만연'); }
+
+/* ================= 화면 그리기 ================= */
+function renderStatic(){
+  $('abc').innerHTML = ABC.map(([L,k])=>`<div class="card" data-k="${k}"><span class="letter">${L}</span><p class="txt">${esc(S[k].ex)}</p><span class="name">${k} · ${S[k].tag}</span><button class="btn sm" data-pick="${k}">이 글이 마음에 들어요</button></div>`).join('');
+  $('tagsA').innerHTML = STYLES.filter(s=>s.g==='A').map(s=>`<span>${s.k}</span>`).join('');
+  $('tagsB').innerHTML = STYLES.filter(s=>s.g==='B').map(s=>`<span>${s.k}</span>`).join('');
+  $('slist').innerHTML = '<p class="grp">전달 방식</p>' + STYLES.map((s,i)=>(i===8?'<p class="grp">문장 호흡</p>':'')+`<button data-s="${s.k}"><span>${String(i+1).padStart(2,'0')}</span>${s.k}</button>`).join('');
+  const opts = STYLES.map(s=>`<option>${s.k}</option>`).join('');
+  ['cmpA','cmpB'].forEach(id=>$(id).innerHTML=opts);
+  const optsA = STYLES.filter(s=>s.g==='A').map(s=>`<option>${s.k}</option>`).join('');
+  $('g_main').innerHTML = optsA; $('g_sub').innerHTML = '<option>없음</option>'+optsA;
+  Object.entries(OPTS).forEach(([id,arr])=>$(id).innerHTML = arr.map(o=>`<option>${o}</option>`).join(''));
+  $('chips').innerHTML = STYLES.map(s=>`<button data-c="${s.k}">${s.k}</button>`).join('');
+}
+
+function renderDetail(){
+  const s = S[state.cur], i = STYLES.indexOf(s)+1;
+  document.querySelectorAll('#slist button').forEach(b=>b.classList.toggle('on', b.dataset.s===state.cur));
+  $('detail').innerHTML = `<p class="eye">${s.g==='A'?'전달 방식':'문장 호흡'} / ${String(i).padStart(2,'0')}</p>
+    <h3>${s.k}</h3><p class="tag">${s.tag}</p><p>${s.feat}</p>
+    <div class="meta"><div><b>어디에 쓰나요?</b>${s.use}</div><div><b>주의할 점</b>${s.warn}</div></div>
+    <p class="muted">공통 소재 · 퇴직 후, 다시 일을 찾는 50대</p>
+    <p class="sample">${esc(s.ex)}</p>
+    <div class="task"><b>작은 실습</b> · ${s.task}<textarea data-task="${s.k}" placeholder="여기에 써 보세요. (자동 저장)">${esc(state.tasks[s.k]||'')}</textarea></div>`;
+}
+
+function renderCompare(){
+  $('cmpA').value = state.cmpA; $('cmpB').value = state.cmpB;
+  $('cmp').innerHTML = [state.cmpA, state.cmpB].map((k,i)=>{
+    const s=S[k], a=analyze(s.ex);
+    return `<div class="card"><p class="eye">${i?'두 번째':'첫 번째'} 문체</p><h3>${k}</h3><p class="sample">${esc(s.ex)}</p>
+      <p class="muted">표현의 특징 · ${s.feat}<br>문장 ${a.n}개 · 평균 ${a.avg}자 · 끝맺음 ${a.top}</p></div>`;
+  }).join('');
+}
+
+function prompt(){
+  const src = (state.source||'').trim() || '(원문을 입력하세요)';
+  const ch = state.chosen;
+  return `당신은 글쓰기 수업의 편집자입니다. 아래 원문을 ${ch.join(', ')}(으)로 각각 바꿔 써 주세요.
+
+[지켜 주세요]
+- 원문의 사실과 핵심 의미는 그대로 두고, 표현 방식만 바꿉니다.
+- 원문에 없는 사건·통계·인용은 추가하지 않습니다.
+- 각 결과는 원문과 비슷한 길이(200~300자 안팎)로 씁니다.
+
+[문체별 기준]
+${ch.map(k=>`- ${k}: ${S[k].feat} (주의: ${S[k].warn})`).join('\n')}
+
+[출력 형식]
+문체마다 "■ 문체 이름" 아래에 바꾼 글을 쓰고, 이어서 "달라진 점:"으로 원문과 비교해 바뀐 표현 2가지를 설명해 주세요.
+
+[원문]
+${src}`;
+}
+
+function renderPractice(){
+  const a = analyze(state.source);
+  $('stChars').textContent = a.chars; $('stSent').textContent = a.n; $('stAvg').textContent = a.avg ? a.avg+'자' : '0';
+  $('stEnd').textContent = a.top;
+  let d = '원문을 쓰면 문장 습관을 분석해 드립니다.';
+  if (a.n){
+    const r = rhythmOf(a.avg);
+    const endKinds = Object.keys(a.ends).filter(e=>e!=='질문'&&e!=='기타');
+    d = r==='간결' ? `문장이 짧은 편입니다(평균 ${a.avg}자). 간결체에 가까워요. 리듬을 위해 가끔 긴 문장을 섞어 보세요.`
+      : r==='중간' ? `문장 길이가 적당합니다(평균 ${a.avg}자). 어떤 문체로도 바꾸기 좋은 상태예요.`
+      : `문장이 긴 편입니다(평균 ${a.avg}자). 만연체에 가까워요. 가장 긴 문장을 둘로 나눠 보세요: "${a.longest.slice(0,40)}…"`;
+    if (endKinds.length>1) d += ` · 끝맺음이 ${endKinds.join('/')}로 섞여 있어요. 한 가지로 통일하면 목소리가 또렷해집니다.`;
+    if (a.chars<100) d += ' · 비교가 잘 되려면 200자 정도로 늘려 보세요.';
+  }
+  $('diag').textContent = d;
+  document.querySelectorAll('#chips button').forEach(b=>b.classList.toggle('on', state.chosen.includes(b.dataset.c)));
+  $('chipCount').textContent = `(${state.chosen.length}/3)`;
+  $('prompt').textContent = prompt();
+  // 결과 칸: 선택한 문체에 맞춰
+  const cur = [...$('results').querySelectorAll('textarea')].map(t=>t.dataset.r).join('|');
+  if (cur !== state.chosen.join('|')){
+    $('results').innerHTML = state.chosen.map(k=>`<div class="card"><label class="f">${k} 결과</label><textarea data-r="${k}" placeholder="AI 결과를 붙여 넣고 나의 말로 고쳐 보세요.">${esc(state.results[k]||'')}</textarea></div>`).join('');
+  }
+}
+
+function guideRows(){
+  const g = k => (state[k]||'').trim() || '(미입력)';
+  return [['책의 주제',g('g_topic')],['대상 독자',g('g_reader')],['전달할 느낌',g('g_feel')],['기본 문체',state.g_main],['보조 문체',state.g_sub],
+          ['문장 호흡',state.g_rhythm],['종결 표현',state.g_end],['시점·호칭',state.g_pov],['피할 표현',g('g_avoid')],['나만의 규칙',g('g_note')]];
+}
+function guideText(){
+  return `[나의 문체 지침]
+${guideRows().map(([a,b])=>`- ${a}: ${b}`).join('\n')}
+
+이 기준으로 아래 원고를 다듬어 주세요. 사실과 핵심 의미는 유지하고, 없는 내용은 추가하지 마세요. 고친 부분은 이유를 짧게 알려 주세요.
+
+[샘플 원고]
+${(state.draft||'').trim() || '(미입력)'}`;
+}
+function renderFinish(){
+  $('guideList').innerHTML = guideRows().map(([a,b])=>`<dt>${a}</dt><dd>${esc(b)}</dd>`).join('');
+  const t = (state.draft||'').trim(), a = analyze(t), out = [];
+  if (a.n){
+    const want = state.g_end;
+    const endOK = want.startsWith('장면') ? true : (a.ends[want]||0) >= a.n - (a.ends['질문']||0) - (a.ends['기타']||0);
+    out.push([endOK, endOK ? `종결 표현 ${want} 일치` : `종결 표현이 ${want}와 다른 문장이 있어요`]);
+    const r = rhythmOf(a.avg), wr = state.g_rhythm;
+    const rOK = wr.startsWith('짧은 문장') ? r==='간결' : wr.startsWith('긴') ? r!=='간결' : wr.startsWith('짧거나') ? r!=='만연' : true;
+    out.push([rOK, `평균 ${a.avg}자 · ${rOK ? '호흡이 지침과 맞아요' : '호흡이 지침('+wr+')과 달라요'}`]);
+    const avoid = (state.g_avoid||'').split(/[,·]/).map(s=>s.trim()).filter(s=>s.length>=2 && t.includes(s));
+    if ((state.g_avoid||'').trim()) out.push([!avoid.length, avoid.length ? `피할 표현 발견: ${avoid.join(', ')}` : '피할 표현 없음']);
+    out.push([a.chars>=150, a.chars>=150 ? `${a.chars}자 · 한 문단 분량 충분` : `${a.chars}자 · 150자 이상 써 보세요`]);
+  }
+  $('draftChecks').innerHTML = out.map(([ok,m])=>`<span class="${ok?'ok':'no'}">${ok?'✓':'!'} ${m}</span>`).join('');
+}
+
+function renderPick(){
+  document.querySelectorAll('#abc .card').forEach(c=>c.classList.toggle('picked', c.dataset.k===state.pick));
+  $('abcWrap').classList.toggle('revealed', !!state.revealed);
+  $('pickMsg').textContent = state.revealed ? (state.pick ? PICK_MSG[state.pick] : '세 글은 설명체 · 서사체 · 사색체입니다.') : (state.pick ? '좋아요! 이제 문체 이름을 공개해 보세요.' : '');
+}
+function fillInputs(){
+  ['source','insight','draft','g_topic','g_reader','g_feel','g_avoid','g_note','g_main','g_sub','g_rhythm','g_end','g_pov'].forEach(k=>{ if(state[k]!==undefined) $(k).value=state[k]; });
+}
+function renderAll(){ renderPick(); renderDetail(); renderCompare(); renderPractice(); renderFinish(); }
+
+/* ================= 동작 ================= */
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2000); }
+async function copy(text,msg){
+  try { await navigator.clipboard.writeText(text); }
+  catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  toast(msg||'복사했습니다');
+}
+
+renderStatic(); fillInputs(); renderAll();
+
+$('abc').addEventListener('click', e=>{ const b=e.target.closest('[data-pick]'); if(b){ state.pick=b.dataset.pick; save(); renderPick(); } });
+$('reveal').onclick = ()=>{ state.revealed=true; save(); renderPick(); };
+$('slist').addEventListener('click', e=>{ const b=e.target.closest('[data-s]'); if(b){ state.cur=b.dataset.s; save(); renderDetail(); } });
+$('detail').addEventListener('input', e=>{ const k=e.target.dataset.task; if(k){ state.tasks[k]=e.target.value; save(); } });
+['cmpA','cmpB'].forEach(id=>$(id).addEventListener('change', e=>{ state[id]=e.target.value; save(); renderCompare(); }));
+$('swap').onclick = ()=>{ [state.cmpA,state.cmpB]=[state.cmpB,state.cmpA]; save(); renderCompare(); };
+
+$('chips').addEventListener('click', e=>{
+  const b=e.target.closest('[data-c]'); if(!b) return; const k=b.dataset.c;
+  if (state.chosen.includes(k)) state.chosen = state.chosen.filter(x=>x!==k);
+  else if (state.chosen.length>=3) return toast('문체는 3개까지 고를 수 있어요. 하나를 먼저 빼 주세요');
+  else state.chosen.push(k);
+  save(); renderPractice();
+});
+$('results').addEventListener('input', e=>{ const k=e.target.dataset.r; if(k){ state.results[k]=e.target.value; save(); } });
+$('copyPrompt').onclick = ()=>{
+  if (!(state.source||'').trim()) return toast('먼저 원문을 입력해 주세요');
+  if (!state.chosen.length) return toast('문체를 하나 이상 골라 주세요');
+  copy(prompt(),'프롬프트를 복사했습니다 — AI에 붙여 넣으세요');
+};
+
+['source','insight','draft','g_topic','g_reader','g_feel','g_avoid','g_note'].forEach(k=>$(k).addEventListener('input', e=>{
+  state[k]=e.target.value; save(); if(k==='source') renderPractice(); renderFinish();
+}));
+['g_main','g_sub','g_rhythm','g_end','g_pov'].forEach(k=>$(k).addEventListener('change', e=>{ state[k]=e.target.value; save(); renderFinish(); }));
+
+$('importBtn').onclick = ()=>{
+  let ts=null; try { ts = JSON.parse(localStorage.getItem('topic-statement-maker-v2')); } catch(e){}
+  if (!ts || !(ts.topic||ts.reader)) { $('importMsg').textContent='가져올 내용이 없습니다. 같은 브라우저에서 주제선언문 작성기를 먼저 채워 주세요.'; return; }
+  const map = {g_topic:ts.topic, g_reader:ts.reader};
+  if (ts.tone && !(state.g_note||'').trim()) map.g_note = '문체 메모: '+ts.tone;
+  const filled = Object.keys(map).filter(k=>map[k] && (state[k]||'').trim() && state[k].trim()!==map[k].trim());
+  if (filled.length && !confirm('이미 입력한 칸이 있습니다. 주제선언문 작성기의 내용으로 바꿀까요?')) return;
+  Object.entries(map).forEach(([k,v])=>{ if(v){ state[k]=v; $(k).value=v; } });
+  save(); renderFinish(); $('importMsg').textContent='✓ 주제·독자를 가져왔습니다.';
+};
+$('copyGuide').onclick = ()=>copy(guideText(),'문체 지침과 원고를 복사했습니다');
+$('download').onclick = ()=>{
+  const md = `# 나의 문체 찾기 — 실습 결과
+작성일: ${new Date().toLocaleDateString('ko-KR')}
+
+## 1. 처음 끌린 글
+${state.pick ? state.pick : '(선택 안 함)'}
+
+## 2. 나의 원문
+${(state.source||'').trim()||'(미입력)'}
+
+## 3. 문체 바꿔 쓰기 결과
+${state.chosen.map(k=>`### ${k}\n${(state.results[k]||'').trim()||'(미입력)'}`).join('\n\n')}
+
+### 비교하며 발견한 점
+${(state.insight||'').trim()||'(미입력)'}
+
+## 4. 나의 문체 지침
+${guideRows().map(([a,b])=>`- ${a}: ${b}`).join('\n')}
+
+## 5. 최종 샘플 원고
+${(state.draft||'').trim()||'(미입력)'}
+`;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown;charset=utf-8'}));
+  a.download='나의_문체_지침.md'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),500);
+};
+
+// 스크롤 위치에 맞춰 상단 메뉴 강조
+const links=[...document.querySelectorAll('#menu a')];
+const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting) links.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+en.target.id)); }),{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('section.sec').forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
